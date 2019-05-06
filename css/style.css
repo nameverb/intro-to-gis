@@ -1,16 +1,26 @@
 @charset "UTF-8";
 /* CSS Document */
 
-h1 {
+h1  {
 	font-weight: 700;
 	font-size: 5em;
+	font-family: 'Roboto', sans-serif;
+	font-style: normal;
+}
+
+h2 h3 {
+	font-weight: 400;
+}
+
+h4 {
+	font-weight: 700;
 }
 
 p {
-	font-weight: 700;
 	font-size: 1.3em;
+	font-family: 'Noto Sans', sans-serif;
 }
 
-img {
-	max-width: 100%;
+.jumbotron {
+	background-color: #fff
 }
