@@ -1,0 +1,17 @@
+@charset "UTF-8";
+/* CSS Document */
+
+h1 {
+	font-weight: 700;
+	font-style: italic;
+	font-size: 5em;
+}
+
+p {
+	font-weight: 700;
+	font-size: 1.3em;
+}
+
+img {
+	max-width: 100%;
+}
