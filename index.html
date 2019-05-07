@@ -31,8 +31,8 @@
           <img src="img/coverage map cropped.png" class="img-fluid" alt="Therapist deserts" id="jumboimage">
             </div>
     </div>
-    <div class="container col-sm-8 col-xs-12">
-      <div class="row">
+    <div class="container col-xs-12">
+
           <h4>Introduction</h4>
           <p>While much of our national conversation focuses on physical health, we often neglect to discuss the importance of access to mental health in the United States. According to the National Alliance on Mental Illness, millions of adults in the US face some form of mental illness, and yet 60% of them “didn’t receive mental health services in the previous year.”<sup>1</sup>
           <br>
@@ -47,15 +47,15 @@
           <h4>Inspiration</h4>
           <p>My inspiration was a map of “abortion deserts” (<i>Figure 1</i>) created by Advancing New Standards in Reproductive Health (ANSIRH), which identified 27 cities in the United States in which residents would have to travel 100 miles or more to access an abortion clinic.<sup>2</sup>
           </p>
-        </div>
-        <div class="container col-sm-8 col-xs-12">
+
+        <div class="container col-xs-12">
           <img src="img/abortion_deserts.png" class="img-fluid" alt="Abortion deserts, Figure 1">
           <p class="caption">Figure 1</p>
           <br>
           <br>
         </div>
       <div class="container">
-      <div class="row">
+
         <h4>Methods</h4>
         <p>The first step in designing this map was to determine what distance defines a therapist desert. I had initially settled on a radius of 50 miles from each point that represents the location of a therapist, with any population within a radius considered to be in the coverage area and any population outside of a radius considered to be living in a therapist desert. After presenting my first draft of the map to Professor Christensen, Professor Braden, and Professor Sula, I then scaled back this radius to only 25 miles based on their feedback. Sula specifically suggested that seeking mental health treatment is a continuous and recurring process, and therefore anything outside of 25 miles could be considered a burden.
         <br>
@@ -73,7 +73,7 @@
   <br>
   <br>
 The first shapefiles I added to my project were US states, then points of therapist locations as seen in Figure 2. Unsurprisingly, the amount of therapists in any given location in the United States tends to have a direct correlation with population. The eastern part of the country has the most therapists throughout its cities, while the western and midwestern states have less therapists, especially in rural areas.</p>
-          <div class="container col-sm-8 col-xs-12">
+          <div class="container col-xs-12">
             <img src="img/points.png" class="img-fluid" alt="Therapist point locations, Figure 2">
             <p class="caption">Figure 2</p>
           </div>
@@ -84,14 +84,14 @@ The first shapefiles I added to my project were US states, then points of therap
 <br>
 I had also initially created Voronoi polygons using these points (<i>Figure 3</i>), but the resulting map really only showed population density and would not have been a good representation of therapist deserts.
 </p>
-          <div class="container col-sm-8 col-xs-12">
+          <div class="container col-xs-12">
             <img src="img/voronoi.png" class="img-fluid" alt="Voronoi polygons, Figure 3">
             <p class="caption">Figure 3</p>
           </div>
           <br>
           <br>
           <p>After reverting back to the map of states, I brought in the shapefile of counties as well as population data by county. In order to join these fields, I had to first convert the GEOID in population data to a string, then use the lpad() function in the field calculator to add the leading zeros that were present in the shapefile to the population data as well in order to use the GEOID columns in both datasets as joining fields. Once I added the zeros in, I saved and created a choropleth map of county population across the entire US shaded by population size. From there, I performed a buffer analysis on the therapist location points (<i>Figure 4</i>), initially using a 50-mile radius instead of the 25-mile radius that I eventually decided to use.</p>
-          <div class="container col-sm-8 col-xs-12">
+          <div class="container col-xs-12">
             <img src="img/Main map.png" class="img-fluid" alt="50-mile radius buffer, Figure 4">
             <p class="caption">Figure 4</p>
           </div>
@@ -100,7 +100,7 @@ I had also initially created Voronoi polygons using these points (<i>Figure 3</i
             <br>
           After inspecting the attribute tables for both the population data and the block groups, I noticed that the population data’s GEOID field had the string “15000US” at the beginning of each value, but the shapefile itself only contained the number. In order to join the two datasets, I created a new column in the shapefile named “GEOID2”, and used a simple add statement in field calculator (‘15000US’ + “GEOID”) to duplicate the existing GEOID column but with the string from the population data added to the beginning. Once this column was created, I joined the two tables on the GEOID and GEOID2 fields. After looking at the attribute table for the block groups shapefile, I noticed that the population data that was added from the join was composed of strings, not integers, which means I couldn’t use that field to create a choropleth map. To fix this, I used the to_int() function in field calculator to create a new column called “pop_num” that converted the population data from a string to integers. I also had an issue with data from Florida, specifically, not joining with the rest of the data when creating a choropleth, so I had to add Florida and its block data separately and perform the same calculations separately. From there, I created the choropleth map (Figure 5) and used the clip function to cut off any parts of the buffer radiuses that didn’t overlap with the map of the US.
           </p>
-          <div class="container col-sm-8 col-xs-12">
+          <div class="container col-xs-12">
             <img src="img/single map.png" class="img-fluid" alt="First version, Figure 5">
             <p class="caption">Figure 5</p>
           </div>
@@ -109,7 +109,7 @@ I had also initially created Voronoi polygons using these points (<i>Figure 3</i
             <br>
           Using the quantile (equal count) mode to create the choropleth, there were a few outliers in the population data that resulted in the higher end of the legend including more values than others. Rather than filter these out, I changed the highest amount in the legend to >2624 to still include the values but avoid confusion.
           </p>
-      </div>
+
       <div class="jumbotron">
           <h4>Findings</h4>
             <img src="img/coverage map.png" class="img-fluid" alt="Final version, Figure 6" id="findings">
