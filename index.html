@@ -37,21 +37,76 @@
             <br>
           <img src="img/coverage map cropped.png" class="img-fluid" alt="Therapist deserts">
     </div>
-    <div class="container">
+    <div class="container col-sm-8 col-xs-12">
       <div class="row">
           <h4>Introduction</h4>
           <p>While much of our national conversation focuses on physical health, we often neglect to discuss the importance of access to mental health in the United States. According to the National Alliance on Mental Illness, millions of adults in the US face some form of mental illness, and yet 60% of them “didn’t receive mental health services in the previous year.”<sup>1</sup>
           <br>
+          <br>
           Social stigma, inadequate (or nonexistent) health insurance, or unaffordable copays are likely contributors to people not seeking help, but what about those people who live in areas where there are no mental health professionals to go to?
           <br>
+          <br>
           This project focuses on “therapist deserts,” or areas in the contiguous United States that don’t have a therapist or other mental health professional within 25 miles of where people live.
+          <br>
+          <br>
           </p>
           <h4>Inspiration</h4>
           <p>My inspiration was a map of “abortion deserts” (Figure 1) created by Advancing New Standards in Reproductive Health (ANSIRH), which identified 27 cities in the United States in which residents would have to travel 100 miles or more to access an abortion clinic.<sup>2</sup>
           </p>
-          <img src="img/abortion_deserts.png" class="img-fluid" alt="Abortion deserts">
-
         </div>
+        <div class="container col-sm-8 col-xs-12">
+          <img src="img/abortion_deserts.png" class="img-fluid" alt="Abortion deserts, Figure 1">
+          <p class="caption">Figure 1</p>
+          <br>
+          <br>
+        </div>
+      <div class="container">
+      <div class="row">
+        <h4>Methods</h4>
+        <p>The first step in designing this map was to determine what distance defines a therapist desert. I had initially settled on a radius of 50 miles from each point that represents the location of a therapist, with any population within a radius considered to be in the coverage area and any population outside of a radius considered to be living in a therapist desert. After presenting my first draft of the map to Professor Christensen, Professor Braden, and Professor Sula, I then scaled back this radius to only 25 miles based on their feedback. Sula specifically suggested that seeking mental health treatment is a continuous and recurring process, and therefore anything outside of 25 miles could be considered a burden.
+        <br>
+        <br>
+        The following datasets were used in the creation of this map:
+          <ul>
+            <li>Locations of therapists in the United States using the United States Census Bureau’s North American Industry Classifications System (NAICS) code 621330 (emailed to me by Professor Christensen).<sup>3</sup></li>
+            <li>State, county, and lake shapefiles obtained from Natural Earth.<sup>4</sup></li>
+            <li>Census block group shapefiles obtained from United States Census Bureau TIGER/Line® Shapefiles.<sup>5</sup></li>
+            <li>Population data obtained from US Census Bureau American Community Survey 5-Year Estimates via Social Explorer.<sup>6</sup></li>
+            <li>National Park and State Park shapefiles obtained from the United States Geological Survey (USGS).<sup>7</sup></li>
+          </ul>
+
+  Once all of the data was ready, I first set the CRS projection in QGIS to US Albers Equal Area Conic, a good CRS for showing the contiguous United States with very little distortion or warping of spatial areas. This project only dealt with the lower 48 states in the continental US, so I deleted any records pertaining to Alaska, Hawaii, The Virgin Islands, Guam, or Puerto Rico in my shapefiles.
+
+  The first shapefiles I added to my project were US states, then points of therapist locations (Figure 2). Unsurprisingly, the amount of therapists in any given location in the United States tends to have a direct correlation with population. The eastern part of the country has the most therapists throughout its cities, while the western and midwestern states have less therapists, especially in rural areas.</p>
+          <div class="container col-sm-8 col-xs-12">
+            <img src="img/points.png" class="img-fluid" alt="Therapist point locations, Figure 2">
+            <p class="caption">Figure 2</p>
+          </div>
+  <br>
+  <br>
+  <p>A shapefile was also used to cut out the Great Lakes using the clip function in QGIS.
+<br>
+<br>
+I had also initially created Voronoi polygons using these points (Figure 3), but the resulting map really only showed population density and would not have been a good representation of therapist deserts.
+</p>
+          <div class="container col-sm-8 col-xs-12">
+            <img src="img/voronoi.png" class="img-fluid" alt="Voronoi polygons, Figure 3">
+            <p class="caption">Figure 3</p>
+          </div>
+          <br>
+          <br>
+          <p>After reverting back to the map of states, I brought in the shapefile of counties as well as population data by county. In order to join these fields, I had to first convert the GEOID in population data to a string, then use the lpad() function in the field calculator to add the leading zeros that were present in the shapefile to the population data as well in order to use the GEOID columns in both datasets as joining fields. Once I added the zeros in, I saved and created a choropleth map of county population across the entire US shaded by population size. From there, I performed a buffer analysis on the therapist location points (Figure 4), initially using a 50-mile radius instead of the 25-mile radius that I eventually decided to use.</p>
+          <div class="container col-sm-8 col-xs-12">
+            <img src="img/Main map.png" class="img-fluid" alt="Voronoi polygons, Figure 3">
+            <p class="caption">Figure 4</p>
+          </div>
+          <p>In order to drill down further into which populations live in therapist deserts, I switched out the county data with Census block groups. There are many Census blocks in the US, but I was only concerned with looking at those states with blocks that fell outside of the therapist coverage area. The US Census doesn’t allow you to download block data for the entire country at one time, so I had to determine which states I needed to show on the map. After figuring this out, I downloaded each state’s set of polygons individually, added them to QGIS, then merged them into one shapefile. I then made sure I had the same set of state population data in one dataset, and added that to the project as well to begin the joining process to create another choropleth map shaded by population.
+            <br>
+            <br>
+          After inspecting the attribute tables for both the population data and the block groups, I noticed that the population data’s GEOID field had the string “15000US” at the beginning of each value, but the shapefile itself only contained the number. In order to join the two datasets, I created a new column in the shapefile named “GEOID2”, and used a simple add statement in field calculator (‘15000US’ + “GEOID”) to duplicate the existing GEOID column but with the string from the population data added to the beginning. Once this column was created, I joined the two tables on the GEOID and GEOID2 fields. After looking at the attribute table for the block groups shapefile, I noticed that the population data that was added from the join was composed of strings, not integers, which means I couldn’t use that field to create a choropleth map. To fix this, I used the to_int() function in field calculator to create a new column called “pop_num” that converted the population data from a string to integers. I also had an issue with data from Florida, specifically, not joining with the rest of the data when creating a choropleth, so I had to add Florida and its block data separately and perform the same calculations separately. From there, I created the choropleth map (Figure 5) and used the clip function to cut off any parts of the buffer radiuses that didn’t overlap with the map of the US.
+          </p>
+      </div>
+    </div>
     </div>
 
     <!-- Optional JavaScript -->

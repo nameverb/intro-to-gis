@@ -16,11 +16,16 @@ h4 {
 	font-weight: 700;
 }
 
-p {
-	font-size: 1.3em;
+p li {
+	font-size: 1.1em;
 	font-family: 'Noto Sans', sans-serif;
 }
 
 .jumbotron {
 	background-color: #fff
+}
+
+.caption {
+	font-size: .98em;
+	font-style: italic;
 }
