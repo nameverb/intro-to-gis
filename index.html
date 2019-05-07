@@ -4,9 +4,7 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Drew Stanley</title>
-<link rel="shortcut icon" type="image/png" href="/favicon.png"/>
-<link rel="shortcut icon" type="image/png" href="http://eg.com/favicon.png"/>
+<title>Therapist Deserts</title>
 
 <!-- Bootstrap -->
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -22,11 +20,6 @@
     <![endif]-->
 </head>
 
-<body>
-<!-- HEADER -->
-
-    <title>Therapist deserts</title>
-  </head>
   <body>
     <div class="jumbotron"
       <div class="row">
@@ -51,7 +44,7 @@
           <br>
           </p>
           <h4>Inspiration</h4>
-          <p>My inspiration was a map of “abortion deserts” (Figure 1) created by Advancing New Standards in Reproductive Health (ANSIRH), which identified 27 cities in the United States in which residents would have to travel 100 miles or more to access an abortion clinic.<sup>2</sup>
+          <p>My inspiration was a map of “abortion deserts” (<i>Figure 1</i>) created by Advancing New Standards in Reproductive Health (ANSIRH), which identified 27 cities in the United States in which residents would have to travel 100 miles or more to access an abortion clinic.<sup>2</sup>
           </p>
         </div>
         <div class="container col-sm-8 col-xs-12">
@@ -76,8 +69,9 @@
           </ul>
 
   Once all of the data was ready, I first set the CRS projection in QGIS to US Albers Equal Area Conic, a good CRS for showing the contiguous United States with very little distortion or warping of spatial areas. This project only dealt with the lower 48 states in the continental US, so I deleted any records pertaining to Alaska, Hawaii, The Virgin Islands, Guam, or Puerto Rico in my shapefiles.
-
-  The first shapefiles I added to my project were US states, then points of therapist locations (Figure 2). Unsurprisingly, the amount of therapists in any given location in the United States tends to have a direct correlation with population. The eastern part of the country has the most therapists throughout its cities, while the western and midwestern states have less therapists, especially in rural areas.</p>
+  <br>
+  <br>
+The first shapefiles I added to my project were US states, then points of therapist locations as seen in Figure 2. Unsurprisingly, the amount of therapists in any given location in the United States tends to have a direct correlation with population. The eastern part of the country has the most therapists throughout its cities, while the western and midwestern states have less therapists, especially in rural areas.</p>
           <div class="container col-sm-8 col-xs-12">
             <img src="img/points.png" class="img-fluid" alt="Therapist point locations, Figure 2">
             <p class="caption">Figure 2</p>
@@ -87,7 +81,7 @@
   <p>A shapefile was also used to cut out the Great Lakes using the clip function in QGIS.
 <br>
 <br>
-I had also initially created Voronoi polygons using these points (Figure 3), but the resulting map really only showed population density and would not have been a good representation of therapist deserts.
+I had also initially created Voronoi polygons using these points (<i>Figure 3</i>), but the resulting map really only showed population density and would not have been a good representation of therapist deserts.
 </p>
           <div class="container col-sm-8 col-xs-12">
             <img src="img/voronoi.png" class="img-fluid" alt="Voronoi polygons, Figure 3">
@@ -95,9 +89,9 @@ I had also initially created Voronoi polygons using these points (Figure 3), but
           </div>
           <br>
           <br>
-          <p>After reverting back to the map of states, I brought in the shapefile of counties as well as population data by county. In order to join these fields, I had to first convert the GEOID in population data to a string, then use the lpad() function in the field calculator to add the leading zeros that were present in the shapefile to the population data as well in order to use the GEOID columns in both datasets as joining fields. Once I added the zeros in, I saved and created a choropleth map of county population across the entire US shaded by population size. From there, I performed a buffer analysis on the therapist location points (Figure 4), initially using a 50-mile radius instead of the 25-mile radius that I eventually decided to use.</p>
+          <p>After reverting back to the map of states, I brought in the shapefile of counties as well as population data by county. In order to join these fields, I had to first convert the GEOID in population data to a string, then use the lpad() function in the field calculator to add the leading zeros that were present in the shapefile to the population data as well in order to use the GEOID columns in both datasets as joining fields. Once I added the zeros in, I saved and created a choropleth map of county population across the entire US shaded by population size. From there, I performed a buffer analysis on the therapist location points (<i>Figure 4</i>), initially using a 50-mile radius instead of the 25-mile radius that I eventually decided to use.</p>
           <div class="container col-sm-8 col-xs-12">
-            <img src="img/Main map.png" class="img-fluid" alt="Voronoi polygons, Figure 3">
+            <img src="img/Main map.png" class="img-fluid" alt="50-mile radius buffer, Figure 4">
             <p class="caption">Figure 4</p>
           </div>
           <p>In order to drill down further into which populations live in therapist deserts, I switched out the county data with Census block groups. There are many Census blocks in the US, but I was only concerned with looking at those states with blocks that fell outside of the therapist coverage area. The US Census doesn’t allow you to download block data for the entire country at one time, so I had to determine which states I needed to show on the map. After figuring this out, I downloaded each state’s set of polygons individually, added them to QGIS, then merged them into one shapefile. I then made sure I had the same set of state population data in one dataset, and added that to the project as well to begin the joining process to create another choropleth map shaded by population.
@@ -105,17 +99,52 @@ I had also initially created Voronoi polygons using these points (Figure 3), but
             <br>
           After inspecting the attribute tables for both the population data and the block groups, I noticed that the population data’s GEOID field had the string “15000US” at the beginning of each value, but the shapefile itself only contained the number. In order to join the two datasets, I created a new column in the shapefile named “GEOID2”, and used a simple add statement in field calculator (‘15000US’ + “GEOID”) to duplicate the existing GEOID column but with the string from the population data added to the beginning. Once this column was created, I joined the two tables on the GEOID and GEOID2 fields. After looking at the attribute table for the block groups shapefile, I noticed that the population data that was added from the join was composed of strings, not integers, which means I couldn’t use that field to create a choropleth map. To fix this, I used the to_int() function in field calculator to create a new column called “pop_num” that converted the population data from a string to integers. I also had an issue with data from Florida, specifically, not joining with the rest of the data when creating a choropleth, so I had to add Florida and its block data separately and perform the same calculations separately. From there, I created the choropleth map (Figure 5) and used the clip function to cut off any parts of the buffer radiuses that didn’t overlap with the map of the US.
           </p>
+          <div class="container col-sm-8 col-xs-12">
+            <img src="img/single map.png" class="img-fluid" alt="First version, Figure 5">
+            <p class="caption">Figure 5</p>
+          </div>
+          <p>After getting some initial feedback from Professor Christensen, Professor Braden, and Professor Sula, I changed the buffer analysis from a 50-mile radius to a 25-mile radius, changed the colors of the map, removed any polygons of block groups from the map that had zero counts for land and population data, and added a layer of state and national parks. These final changes resulted in Figure 6.
+            <br>
+            <br>
+          Using the quantile (equal count) mode to create the choropleth, there were a few outliers in the population data that resulted in the higher end of the legend including more values than others. Rather than filter these out, I changed the highest amount in the legend to >2624 to still include the values but avoid confusion.
+          </p>
       </div>
-    </div>
-    </div>
+      <div class="jumbotron">
+          <h4>Findings</h4>
+            <img src="img/coverage map.png" class="img-fluid" alt="Final version, Figure 6" id="findings">
+            <p class="caption">Figure 6: the final map.</p>
+      </div>
+      <p>As mentioned, therapist locations in the US tend to follow population centers, which might make some of these findings a bit unsurprising. With that in mind, some areas of note:
+        <ul>
+          <li>Nevada has a large therapist desert. The areas of Reno and Las Vegas are within the coverage area, but some block groups toward the center of the state with populations between 1581 and 2624 people aren’t near any therapists at all.</li>
+          <li>Some populated blocks of southeastern California, while relatively close to the Los Angeles and San Diego metro areas, are not within 25 miles of a therapist.</li>
+          <li>Montana, Wyoming, and the Dakotas, while largely rural states without any major cities, have many block groups with relatively large populations that are far from the nearest therapist.</li>
+          <li>There are a smattering of very small therapist deserts in the eastern US, the largest of which is in northwestern Maine. This area is also where the Appalachian Mountains run through the state, so while there could be people living in this therapist desert, the population is likely not very high.</li>
+        </ul>
 
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-  </body>
-</html>
+        </p>
+        <br>
+        <br>
+          <h4>Conclusion</h4>
+          <p>These findings show that, while there are some substantial therapist deserts, most of the country is within the coverage area. Inaccessibility due to distance may certainly be a factor in those 60% of adults not seeking mental health treatment when they need it, but social stigma, lack of health insurance, or financial hardship likely play an even larger role.
+            <br>
+            <br>
+          Technological advancements have made it possible for people who don’t live near a therapist to still have a chance to talk to someone through online therapy.<sup>8</sup> This could be a useful tool, but shouldn’t be seen as a replacement for face-to-face interactions.</p>
+          <br>
+          <br>
+          <h4>Works Cited</h4>
+          <ol>
+            <li>National Alliance on Mental Illness. Mental Health Facts in America. <a href="https://www.nami.org/NAMI/media/NAMI-Media/Infographics/GeneralMHFacts.pdf">https://www.nami.org/NAMI/media/NAMI-Media/Infographics/GeneralMHFacts.pdf</a>. Accessed May 4, 2019.</li>
+            <li>Cartwright AF, Karunaratne M, Barr-Walker J, Johns NE, Upadhyay UD. Identifying National Availability of Abortion Care and Distance From Major US Cities: Systematic Online Search. <i>J Med Internet Res 2018</i>. 2018;20(5):e186. doi:<a href="https://doi.org/10.2196/jmir.9717">10.2196/jmir.9717</a></li>
+            <li>NAICS: 621330 - Offices of mental health practitioners (except physicians).</li>
+            <li>Natural Earth Data. <a href="https://www.naturalearthdata.com/downloads/">https://www.naturalearthdata.com/downloads/</a>. Accessed May 5, 2019.</li>
+            <li>US Census Bureau TIGER/Line Shapefiles. TIGER/Line® Shapefiles. Accessed May 5, 2019.</li>
+            <li>American Community Surveys 5-Year Estimates. <a href="https://www.socialexplorer.com/explore-tables">https://www.socialexplorer.com/explore-tables</a>. Accessed May 5, 2019.</li>
+            <li>Protected Areas Database of the United States (PAD-US) 1.4. In: USGS ScienceBase-Catalog. <a href="https://www.sciencebase.gov/catalog/item/56bba648e4b08d617f657960">https://www.sciencebase.gov/catalog/item/56bba648e4b08d617f657960</a>. Accessed May 5, 2019.</li>
+            <li>Haesue J. Does Online Therapy Actually Work? March 2018. <a href="http://www.amhca.org/blogs/haesue-jo/2018/03/21/does-online-therapy-actually-work">http://www.amhca.org/blogs/haesue-jo/2018/03/21/does-online-therapy-actually-work</a>. Accessed May 6, 2019.</li>
+          </ol>
+    </div>
+    </div>
 
 <!--J query -->
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
