@@ -47,7 +47,7 @@
     <div class="container col-xs-12">
 
           <h4>Introduction</h4>
-          <p>This project focuses on “therapist deserts,” or areas in the contiguous United States that don’t have a therapist or other mental health professional within 25 miles of where people live. According to the National Alliance on Mental Illness, millions of adults in the US face some form of mental illness, and yet 60% of them “didn’t receive mental health services in the previous year.”<sup>1</sup>
+          <p>While much of our national conversation focuses on physical health, we often neglect to discuss the importance of access to mental health in the United States. According to the National Alliance on Mental Illness, millions of adults in the US face some form of mental illness, and yet 60% of them “didn’t receive mental health services in the previous year.”<sup>1</sup> Technological advancements have made it possible for people who don’t live near a therapist to still have a chance to talk to someone through online therapy. This could be a useful tool, but shouldn’t be seen as a replacement for face-to-face interactions.<sup>2</sup>
           <br>
           <br>
           Social stigma, inadequate (or nonexistent) health insurance, or unaffordable copays are likely contributors to people not seeking help, but what about those people who live in areas where there are no mental health professionals to go to?
@@ -55,7 +55,7 @@
           <br>
           </p>
           <h4>Inspiration</h4>
-          <p>My inspiration was a map of “abortion deserts” (<i>Figure 1</i>) created by Advancing New Standards in Reproductive Health (ANSIRH), which identified 27 cities in the United States in which residents would have to travel 100 miles or more to access an abortion clinic.<sup>2</sup>
+          <p>My inspiration was a map of “abortion deserts” (<i>Figure 1</i>) created by Advancing New Standards in Reproductive Health (ANSIRH), which identified 27 cities in the United States in which residents would have to travel 100 miles or more to access an abortion clinic.<sup>3</sup>
           </p>
 
         <div class="container col-xs-12">
@@ -72,11 +72,11 @@
         <br>
         The following datasets were used in the creation of this map:
           <ul>
-            <li>Locations of therapists in the United States using the United States Census Bureau’s North American Industry Classifications System (NAICS) code 621330 (emailed to me by Professor Christensen).<sup>3</sup></li>
-            <li>State, county, and lake shapefiles obtained from Natural Earth.<sup>4</sup></li>
-            <li>Census block group shapefiles obtained from United States Census Bureau TIGER/Line® Shapefiles.<sup>5</sup></li>
-            <li>Population data obtained from US Census Bureau American Community Survey 5-Year Estimates via Social Explorer.<sup>6</sup></li>
-            <li>National Park and State Park shapefiles obtained from the United States Geological Survey (USGS).<sup>7</sup></li>
+            <li>Locations of therapists in the United States using the United States Census Bureau’s North American Industry Classifications System (NAICS) code 621330 (emailed to me by Professor Christensen).<sup>4</sup></li>
+            <li>State, county, and lake shapefiles obtained from Natural Earth.<sup>5</sup></li>
+            <li>Census block group shapefiles obtained from United States Census Bureau TIGER/Line® Shapefiles.<sup>6</sup></li>
+            <li>Population data obtained from US Census Bureau American Community Survey 5-Year Estimates via Social Explorer.<sup>7</sup></li>
+            <li>National Park and State Park shapefiles obtained from the United States Geological Survey (USGS).<sup>8</sup></li>
           </ul>
 
   Once all of the data was ready, I first set the CRS projection in QGIS to US Albers Equal Area Conic, a good CRS for showing the contiguous United States with very little distortion or warping of spatial areas. This project only dealt with the lower 48 states in the continental US, so I deleted any records pertaining to Alaska, Hawaii, The Virgin Islands, Guam, or Puerto Rico in my shapefiles.
@@ -147,13 +147,13 @@ I had also initially created Voronoi polygons using these points (<i>Figure 3</i
           <h4>Works Cited</h4>
           <ol id="permalink_section">
             <li>National Alliance on Mental Illness. Mental Health Facts in America. <a href="https://www.nami.org/NAMI/media/NAMI-Media/Infographics/GeneralMHFacts.pdf">https://www.nami.org/NAMI/media/NAMI-Media/Infographics/GeneralMHFacts.pdf</a>. Accessed May 4, 2019.</li>
+            <li>Haesue J. Does Online Therapy Actually Work? March 2018. http://www.amhca.org/blogs/haesue-jo/2018/03/21/does-online-therapy-actually-work. Accessed May 6, 2019.</li>
             <li>Cartwright AF, Karunaratne M, Barr-Walker J, Johns NE, Upadhyay UD. Identifying National Availability of Abortion Care and Distance From Major US Cities: Systematic Online Search. <i>J Med Internet Res 2018</i>. 2018;20(5):e186. doi:<a href="https://doi.org/10.2196/jmir.9717">10.2196/jmir.9717</a></li>
             <li>NAICS: 621330 - Offices of mental health practitioners (except physicians).</li>
             <li>Natural Earth Data. <a href="https://www.naturalearthdata.com/downloads/">https://www.naturalearthdata.com/downloads/</a>. Accessed May 5, 2019.</li>
             <li>US Census Bureau TIGER/Line Shapefiles. TIGER/Line® Shapefiles. Accessed May 5, 2019.</li>
             <li>American Community Surveys 5-Year Estimates. <a href="https://www.socialexplorer.com/explore-tables">https://www.socialexplorer.com/explore-tables</a>. Accessed May 5, 2019.</li>
             <li>Protected Areas Database of the United States (PAD-US) 1.4. In: USGS ScienceBase-Catalog. <a href="https://www.sciencebase.gov/catalog/item/56bba648e4b08d617f657960">https://www.sciencebase.gov/catalog/item/56bba648e4b08d617f657960</a>. Accessed May 5, 2019.</li>
-            <li>Haesue J. Does Online Therapy Actually Work? March 2018. <a href="http://www.amhca.org/blogs/haesue-jo/2018/03/21/does-online-therapy-actually-work">http://www.amhca.org/blogs/haesue-jo/2018/03/21/does-online-therapy-actually-work</a>. Accessed May 6, 2019.</li>
           </ol>
         </div>
     </div>
